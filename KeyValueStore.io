@@ -20,15 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-port := System args at(1)
+KeyValueStore := Object clone
+KeyValueStore callback := method(aSocket, aServer,
 
-if (port isNil,
-    "\nUsage: iokeyvalue PORT\n" print System exit)
+    write("[Got echo connection from ", aSocket host, "]\n")
+    while(aSocket isOpen,
+        if (aSocket read,
+            command := aSocket readBuffer asString split)
 
+            if (command size == 1,
+                aSocket write("Command too short: ")
+                aSocket write(command at(0))
+                aSocket write("\n"))
+   
+            # Get the actual command
+            cmd := command at(0) asLowercase
 
-write("\n [iokeyvalue] Starting server on port ",  port, "\n")
-server := Server clone setPort(port asNumber)
-server handleSocket := method(aSocket,
-  KeyValueStore clone @callback(aSocket, self)
-  )
-server start
+            if (cmd == "set",
+                aSocket write("SET "),
+                aSocket write("Unknown command ")
+                aSocket write(cmd)
+                aSocket write("\n"))
+
+            aSocket readBuffer empty)
+            write(" closed", aSocket host, "\n"))
