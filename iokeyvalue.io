@@ -25,10 +25,9 @@ port := System args at(1)
 if (port isNil,
     "\nUsage: iokeyvalue PORT\n" print System exit)
 
-
 write("\n [iokeyvalue] Starting server on port ",  port, "\n")
 server := Server clone setPort(port asNumber)
 server handleSocket := method(aSocket,
-  KeyValueStore clone @callback(aSocket, self)
-  )
+  Connection clone @callback(aSocket, self))
+
 server start

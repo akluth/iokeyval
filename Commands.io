@@ -20,12 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-KeyValueStore := Object clone
 
-KeyValueStore set := method(aKey, aValue,
-    write("inserting", aKey, " with ", aValue)
-    self setSlot(aKey, aValue))
+Commands := Object clone
 
-KeyValueStore get := method(aKey,
-    return(self getSlot(aKey)))
-
+Commands set ::= "set"
+Commands get ::= "get"
